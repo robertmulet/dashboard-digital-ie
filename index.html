@@ -16,11 +16,6 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .hdr-c{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .tbtn{background:rgba(255,255,255,.2);border:none;color:#fff;padding:7px 14px;border-radius:20px;cursor:pointer;font-size:.78rem;font-weight:600;transition:.2s}
 .tbtn:hover{background:rgba(255,255,255,.35)}
-.upload-btn{background:rgba(255,255,255,.9);color:#4361ee;font-weight:700}
-.upload-btn:hover{background:#fff}
-.gs-btn{background:rgba(52,168,83,.9);color:#fff;font-weight:700}
-.gs-btn:hover{background:rgba(52,168,83,1)}
-#csvInput{display:none}
 .cnt{max-width:1440px;margin:0 auto;padding:16px}
 .flt{background:var(--card);border-radius:12px;padding:14px;margin-bottom:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;border:1px solid var(--border);box-shadow:0 2px 8px var(--shadow);align-items:end}
 .fg label{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text2);margin-bottom:3px}
@@ -29,26 +24,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .reset-btn:hover{background:var(--red);color:#fff}
 .data-info{background:var(--card);border-radius:12px;padding:10px 16px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;border:1px solid var(--border);box-shadow:0 2px 8px var(--shadow);font-size:.78rem}
 .data-badge{padding:3px 10px;border-radius:12px;font-size:.7rem;font-weight:600;color:#fff}
-.badge-pre{background:var(--accent)}.badge-csv{background:var(--green)}.badge-gs{background:#34a853}
-.modal-bg{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);display:none;justify-content:center;align-items:center;z-index:997}
-.modal-bg.show{display:flex}
-.modal{background:var(--card);border-radius:16px;padding:28px;max-width:560px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.2)}
-.modal h2{font-size:1.1rem;margin-bottom:6px}
-.modal p{font-size:.82rem;color:var(--text2);margin-bottom:14px;line-height:1.5}
-.modal input[type=text]{width:100%;padding:10px 14px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.82rem;margin-bottom:10px}
-.modal .actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
-.modal .btn{padding:9px 20px;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;border:none;transition:.2s}
-.btn-gs{background:#34a853;color:#fff}.btn-gs:hover{background:#2d9249}
-.btn-cancel{background:var(--border);color:var(--text)}.btn-cancel:hover{background:#ccc}
-.btn-danger{background:var(--red);color:#fff}.btn-danger:hover{opacity:.85}
-.modal .status{font-size:.75rem;padding:8px;border-radius:6px;margin-bottom:10px;display:none}
-.status.ok{display:block;background:rgba(6,214,160,.1);color:#06d6a0;border:1px solid rgba(6,214,160,.3)}
-.status.err{display:block;background:rgba(239,71,111,.1);color:#ef476f;border:1px solid rgba(239,71,111,.3)}
-.gs-connected{display:flex;align-items:center;gap:8px;padding:8px 12px;background:rgba(52,168,83,.08);border:1px solid rgba(52,168,83,.2);border-radius:8px;margin-bottom:10px;font-size:.8rem}
-.gs-connected .dot{width:8px;height:8px;border-radius:50%;background:#34a853;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.steps{font-size:.78rem;color:var(--text2);margin-bottom:14px;padding-left:18px}
-.steps li{margin-bottom:6px;line-height:1.4}
+.badge-gs{background:#34a853}
 .kg{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:10px;margin-bottom:14px}
 .kc{background:var(--card);border-radius:12px;padding:14px;border:1px solid var(--border);box-shadow:0 2px 8px var(--shadow);text-align:center;transition:transform .2s}
 .kc:hover{transform:translateY(-2px)}
@@ -85,27 +61,9 @@ td:first-child{text-align:left;font-weight:600}tr:hover td{background:rgba(67,97
 <body>
 <div class="toast" id="toast"></div>
 <div class="loading" id="loading"><div class="spinner"></div></div>
-<div class="modal-bg" id="gsModal">
-<div class="modal">
-  <h2 id="gsTitle">📗 Conectar Google Sheets</h2>
-  <p id="gsDesc"></p>
-  <ol class="steps" id="gsSteps"></ol>
-  <div class="gs-connected" id="gsConn" style="display:none"><span class="dot"></span><span id="gsConnL"></span></div>
-  <div class="status" id="gsSt"></div>
-  <input type="text" id="gsUrl" placeholder="URL de Google Sheets publicada como CSV">
-  <div class="actions">
-    <button class="btn btn-cancel" onclick="closeGS()" id="gsCa">Cancelar</button>
-    <button class="btn btn-danger" id="gsDi" onclick="disconnectGS()" style="display:none">Desconectar</button>
-    <button class="btn btn-gs" onclick="connectGS()" id="gsCo">🔗 Conectar</button>
-  </div>
-</div>
-</div>
 <div class="hdr">
   <h1 id="hT">📊 Cuadro de Mandos · Marketing Digital</h1>
   <div class="hdr-c">
-    <button class="tbtn gs-btn" onclick="openGS()" id="gsBtn">📗 Google Sheets</button>
-    <button class="tbtn upload-btn" onclick="document.getElementById('csvInput').click()" id="upBtn">📂 Cargar CSV</button>
-    <input type="file" id="csvInput" accept=".csv" onchange="handleCSV(this)">
     <button class="tbtn" onclick="toggleLang()" id="lB">🌐 EN</button>
     <button class="tbtn" onclick="toggleTheme()" id="tB">🌙</button>
   </div>
@@ -138,7 +96,7 @@ td:first-child{text-align:left;font-weight:600}tr:hover td{background:rgba(67,97
 <div class="ft" id="fT"></div>
 <script>
 const GS_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vQKpXyUtO50KPtz0agS6cI6mTb1q6BJtuZ3OJ7FtACy88iwYQYYhOy3XiuGYqVwOcqXN1nasYN8x6E5/pub?gid=862792481&single=true&output=csv";
-let R=[],rcm={},lang='es',dk=false,ch={},iD=['',''],gsU=GS_URL;
+let R=[],rcm={},lang='es',dk=false,ch={},iD=['',''];
 const CL=['#4361ee','#7209b7','#f72585','#4cc9f0','#06d6a0','#f77f00','#ef476f','#ffd166','#118ab2','#3a0ca3'];
 const T={
 es:{title:'📊 Cuadro de Mandos · Marketing Digital',reg:'Región',cty:'País',src:'Fuente de tráfico',per:'Mes',frm:'Desde',to:'Hasta',
@@ -151,14 +109,9 @@ i5:'📅 Mejor mes (ingresos)',i6:'🌍 País líder',i7:'📈 ROI Global',i8:'�
 d1:'Mayor retorno por euro invertido',d2:'Menor retorno por euro invertido',d3:'Lidera en tasa de conversión',d4:'Mayor valor medio de pedido',
 d5:'Mes con más ingresos',d6:'Mercado con más ingresos',d7:'Retorno sobre la inversión total',d8:'Coste medio por transacción',
 hs:'Fuente',hr:'Ingresos',hi:'Inversión',hse:'Sesiones',ht:'Trans.',hc:'CR%',hro:'ROAS',ha:'AOV',hcp:'CPA',hri:'ROI%',hp:'País',
-ft:'Dashboard conectado a Google Sheets en vivo',up:'📂 Cargar CSV',rst:'🔄 Resetear filtros',
-gsLive:'GOOGLE SHEETS EN VIVO 🟢',upl:'CSV CARGADO ✓',
-ok:'✅ Dataset cargado',err:'❌ CSV sin columnas requeridas',rstOk:'🔄 Filtros reseteados',
-gsT:'📗 Cambiar Google Sheet',gsD:'Conecta otra Google Sheet publicada como CSV.',
-gsConn:'🔗 Conectar',gsDi:'Restaurar original',gsCa:'Cancelar',gsConnL:'Conectado a Google Sheets',
-gsOk:'✅ Google Sheet conectada',gsErr:'❌ No se pudo leer. Verifica que esté publicada como CSV.',
-gsS1:'Abre tu Google Sheet',gsS2:'<strong>Archivo → Compartir → Publicar en la web</strong>',gsS3:'Selecciona hoja y formato <strong>CSV</strong>',gsS4:'Haz clic en <strong>Publicar</strong> y copia la URL',gsS5:'Pega la URL aquí',
-ld:'⏳ Cargando datos desde Google Sheets...',le:'⚠️ No se pudo conectar a Google Sheets'},
+ft:'Dashboard conectado a Google Sheets · Datos en vivo',rst:'🔄 Resetear filtros',
+gsLive:'GOOGLE SHEETS EN VIVO 🟢',gsOk:'✅ Datos cargados desde Google Sheets',
+ld:'⏳ Cargando datos desde Google Sheets...',le:'⚠️ No se pudo conectar a Google Sheets',rstOk:'🔄 Filtros reseteados'},
 en:{title:'📊 Dashboard · Digital Marketing',reg:'Region',cty:'Country',src:'Traffic Source',per:'Month',frm:'From',to:'To',
 ar:'All',ac:'All',as:'All',ap:'All',
 rev:'Revenue',inv:'Investment',ses:'Sessions',trn:'Transactions',aov:'Avg Order Value',cr:'Conv. Rate',roas:'ROAS',ips:'Rev/Session',cpa:'CPA',pi:'% Inv/Rev',roi:'Simple ROI',
@@ -169,46 +122,15 @@ i5:'📅 Best Month (Revenue)',i6:'🌍 Leading Country',i7:'📈 Global ROI',i8
 d1:'Highest return per dollar invested',d2:'Lowest return per dollar invested',d3:'Leads in conversion rate',d4:'Highest average order value',
 d5:'Month with highest revenue',d6:'Top revenue market',d7:'Total return on investment',d8:'Average cost per transaction',
 hs:'Source',hr:'Revenue',hi:'Investment',hse:'Sessions',ht:'Trans.',hc:'CR%',hro:'ROAS',ha:'AOV',hcp:'CPA',hri:'ROI%',hp:'Country',
-ft:'Dashboard connected to Google Sheets live',up:'📂 Upload CSV',rst:'🔄 Reset filters',
-gsLive:'GOOGLE SHEETS LIVE 🟢',upl:'CSV LOADED ✓',
-ok:'✅ Dataset loaded',err:'❌ Missing required columns',rstOk:'🔄 Filters reset',
-gsT:'📗 Change Google Sheet',gsD:'Connect another published Google Sheet as CSV.',
-gsConn:'🔗 Connect',gsDi:'Restore original',gsCa:'Cancel',gsConnL:'Connected to Google Sheets',
-gsOk:'✅ Google Sheet connected',gsErr:'❌ Could not read. Make sure it is published as CSV.',
-gsS1:'Open your Google Sheet',gsS2:'<strong>File → Share → Publish to the web</strong>',gsS3:'Select sheet and <strong>CSV</strong> format',gsS4:'Click <strong>Publish</strong> and copy URL',gsS5:'Paste URL here',
-ld:'⏳ Loading from Google Sheets...',le:'⚠️ Could not connect to Google Sheets'}
+ft:'Dashboard connected to Google Sheets · Live data',rst:'🔄 Reset filters',
+gsLive:'GOOGLE SHEETS LIVE 🟢',gsOk:'✅ Data loaded from Google Sheets',
+ld:'⏳ Loading from Google Sheets...',le:'⚠️ Could not connect to Google Sheets',rstOk:'🔄 Filters reset'}
 };
 function t(k){return T[lang][k]||k}
 function fm(n){return n>=1e6?'$'+(n/1e6).toFixed(2)+'M':n>=1e3?'$'+(n/1e3).toFixed(1)+'K':'$'+n.toFixed(2)}
 function fn(n){return n.toLocaleString()}
 function toast(m,e){const el=document.getElementById('toast');el.textContent=m;el.style.background=e?'var(--red)':'var(--green)';el.classList.add('show');setTimeout(()=>el.classList.remove('show'),3500)}
 
-function openGS(){document.getElementById('gsModal').classList.add('show');document.getElementById('gsUrl').value=gsU;
-  document.getElementById('gsTitle').textContent=t('gsT');document.getElementById('gsDesc').textContent=t('gsD');
-  document.getElementById('gsCo').textContent=t('gsConn');document.getElementById('gsCa').textContent=t('gsCa');
-  document.getElementById('gsDi').textContent=t('gsDi');document.getElementById('gsConnL').textContent=t('gsConnL');
-  document.getElementById('gsSteps').innerHTML='<li>'+t('gsS1')+'</li><li>'+t('gsS2')+'</li><li>'+t('gsS3')+'</li><li>'+t('gsS4')+'</li><li>'+t('gsS5')+'</li>';
-  document.getElementById('gsSt').className='status';
-  if(gsU){document.getElementById('gsConn').style.display='flex';document.getElementById('gsDi').style.display='inline-block'}
-}
-function closeGS(){document.getElementById('gsModal').classList.remove('show')}
-function connectGS(){const url=document.getElementById('gsUrl').value.trim();if(!url)return;
-  document.getElementById('loading').classList.add('show');
-  fetchGS(url,function(ok){document.getElementById('loading').classList.remove('show');const st=document.getElementById('gsSt');
-    if(ok){gsU=url;st.className='status ok';st.textContent=t('gsOk');
-      document.getElementById('dataBadge').textContent=t('gsLive');document.getElementById('dataBadge').className='data-badge badge-gs';
-      toast(t('gsOk'),false);setTimeout(closeGS,1000)}
-    else{st.className='status err';st.textContent=t('gsErr')}});
-}
-function disconnectGS(){gsU=GS_URL;loadGS();closeGS()}
-
-function fetchGS(url,cb){
-  Papa.parse(url,{download:true,header:true,skipEmptyLines:true,dynamicTyping:true,
-    complete:function(res){const rows=res.data;if(!rows||!rows.length){cb(false);return}
-      const req=['fecha','fuente_trafico','pais','region','inversion','sesiones','transacciones','ingresos_totales'];
-      if(req.some(c=>!Object.keys(rows[0]).includes(c))){cb(false);return}
-      proc(rows,'Google Sheets');cb(true)},error:function(){cb(false)}});
-}
 function proc(rows,src){
   const map={};rows.forEach(r=>{const d=String(r.fecha||'').substring(0,10),f=r.fuente_trafico||'?',p=r.pais||'?',rg=r.region||'?';
     const k=d+'|'+f+'|'+p+'|'+rg;if(!map[k])map[k]={d,f,p,r:rg,i:0,s:0,t:0,v:0};
@@ -219,18 +141,9 @@ function proc(rows,src){
   document.getElementById('dataDesc').innerHTML='📊 <strong>'+src+'</strong>: <strong>'+fn(rows.length)+'</strong> '+(lang==='es'?'registros':'records')+' | '+dt[0]+' → '+dt[dt.length-1];
   rebF();go();
 }
-function handleCSV(input){const file=input.files[0];if(!file)return;document.getElementById('loading').classList.add('show');
-  Papa.parse(file,{header:true,skipEmptyLines:true,dynamicTyping:true,
-    complete:function(res){const rows=res.data;const req=['fecha','fuente_trafico','pais','region','inversion','sesiones','transacciones','ingresos_totales'];
-      const miss=req.filter(c=>!Object.keys(rows[0]||{}).includes(c));
-      if(miss.length){document.getElementById('loading').classList.remove('show');toast(t('err')+' ('+miss.join(', ')+')',true);input.value='';return}
-      proc(rows,file.name);document.getElementById('dataBadge').textContent=t('upl');document.getElementById('dataBadge').className='data-badge badge-csv';
-      document.getElementById('loading').classList.remove('show');toast(t('ok'),false);input.value=''},
-    error:function(){document.getElementById('loading').classList.remove('show');toast(t('err'),true);input.value=''}});
-}
 function onRC(){uCO();go()}
 function uCO(){const reg=document.getElementById('fr').value,s=document.getElementById('fc'),p=s.value;while(s.options.length>1)s.remove(1);
-  let c;if(reg==='all'){const st=new Set();R.forEach(r=>st.add(r.p));c=[...st].sort()}else{c=rcm[reg]?[...rcm[reg]].sort():[];} 
+  let c;if(reg==='all'){const st=new Set();R.forEach(r=>st.add(r.p));c=[...st].sort()}else{c=rcm[reg]?[...rcm[reg]].sort():[];}
   c.forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;s.appendChild(o)});s.value=c.includes(p)?p:'all'}
 function resetF(){document.getElementById('fr').value='all';uCO();document.getElementById('fc').value='all';document.getElementById('fs').value='all';document.getElementById('fp').value='all';
   document.getElementById('fd').value=iD[0];document.getElementById('ft2').value=iD[1];go();toast(t('rstOk'),false)}
@@ -277,17 +190,16 @@ function rIN(k,rows){const bs=grp(rows,r=>r.f),ss=Object.entries(bs).map(([n,rw]
     '<div class="ii gr"><div class="it">'+t('i6')+'</div><div class="iv">'+bp.n+' — '+fm(bp.rev)+'</div><div class="id">'+t('d6')+'</div></div>'+
     '<div class="ii gr"><div class="it">'+t('i7')+'</div><div class="iv">'+k.roi+'%</div><div class="id">'+t('d7')+'</div></div>'+
     '<div class="ii"><div class="it">'+t('i8')+'</div><div class="iv">$'+k.cpa+'</div><div class="id">'+t('d8')+'</div></div>'}
-function ul(){document.getElementById('hT').textContent=t('title');document.getElementById('lr').textContent=t('reg');document.getElementById('lc').textContent=t('cty');document.getElementById('ls').textContent=t('src');document.getElementById('lp').textContent=t('per');document.getElementById('lf').textContent=t('frm');document.getElementById('lt2').textContent=t('to');document.getElementById('oar').textContent=t('ar');document.getElementById('oac').textContent=t('ac');document.getElementById('oas').textContent=t('as');document.getElementById('oap').textContent=t('ap');document.getElementById('c1t').textContent=t('c1');document.getElementById('c2t').textContent=t('c2');document.getElementById('c3t').textContent=t('c3');document.getElementById('c4t').textContent=t('c4');document.getElementById('t1t').textContent=t('t1');document.getElementById('t2t').textContent=t('t2');document.getElementById('iT').textContent=t('it');document.getElementById('fT').textContent=t('ft');document.getElementById('upBtn').textContent=t('up');document.getElementById('rstBtn').textContent=t('rst');}
+function ul(){document.getElementById('hT').textContent=t('title');document.getElementById('lr').textContent=t('reg');document.getElementById('lc').textContent=t('cty');document.getElementById('ls').textContent=t('src');document.getElementById('lp').textContent=t('per');document.getElementById('lf').textContent=t('frm');document.getElementById('lt2').textContent=t('to');document.getElementById('oar').textContent=t('ar');document.getElementById('oac').textContent=t('ac');document.getElementById('oas').textContent=t('as');document.getElementById('oap').textContent=t('ap');document.getElementById('c1t').textContent=t('c1');document.getElementById('c2t').textContent=t('c2');document.getElementById('c3t').textContent=t('c3');document.getElementById('c4t').textContent=t('c4');document.getElementById('t1t').textContent=t('t1');document.getElementById('t2t').textContent=t('t2');document.getElementById('iT').textContent=t('it');document.getElementById('fT').textContent=t('ft');document.getElementById('rstBtn').textContent=t('rst')}
 function go(){if(!R.length)return;const rows=filt(),k=calc(rows);rKPI(k);rCH(rows);rTB(rows);rIN(k,rows)}
 function toggleTheme(){dk=!dk;document.body.classList.toggle('dark',dk);document.getElementById('tB').textContent=dk?'☀️':'🌙';go()}
 function toggleLang(){lang=lang==='es'?'en':'es';document.getElementById('lB').textContent=lang==='es'?'🌐 EN':'🌐 ES';document.documentElement.lang=lang;ul();go()}
-document.addEventListener('DOMContentLoaded',function(){
-  document.body.addEventListener('dragover',function(e){e.preventDefault()});
-  document.body.addEventListener('drop',function(e){e.preventDefault();const f=e.dataTransfer.files[0];if(f&&f.name.endsWith('.csv')){const dt=new DataTransfer();dt.items.add(f);document.getElementById('csvInput').files=dt.files;handleCSV(document.getElementById('csvInput'))}});
-  document.getElementById('gsModal').addEventListener('click',function(e){if(e.target===this)closeGS()})});
 function loadGS(){document.getElementById('loading').classList.add('show');document.getElementById('dataDesc').innerHTML=t('ld');
-  fetchGS(gsU,function(ok){document.getElementById('loading').classList.remove('show');
-    if(ok){document.getElementById('dataBadge').textContent=t('gsLive');document.getElementById('dataBadge').className='data-badge badge-gs';toast(t('gsOk'),false)}
-    else{document.getElementById('dataDesc').innerHTML=t('le');document.getElementById('dataBadge').textContent='⚠️';document.getElementById('dataBadge').style.background='var(--orange)';toast(t('le'),true)}})}
+  Papa.parse(GS_URL,{download:true,header:true,skipEmptyLines:true,dynamicTyping:true,
+    complete:function(res){document.getElementById('loading').classList.remove('show');const rows=res.data;
+      if(!rows||!rows.length||['fecha','fuente_trafico','pais','region','inversion','sesiones','transacciones','ingresos_totales'].some(c=>!Object.keys(rows[0]).includes(c))){
+        document.getElementById('dataDesc').innerHTML=t('le');document.getElementById('dataBadge').textContent='⚠️';document.getElementById('dataBadge').style.background='var(--orange)';toast(t('le'),true);return}
+      proc(rows,'Google Sheets');document.getElementById('dataBadge').textContent=t('gsLive');document.getElementById('dataBadge').className='data-badge badge-gs';toast(t('gsOk'),false)},
+    error:function(){document.getElementById('loading').classList.remove('show');document.getElementById('dataDesc').innerHTML=t('le');document.getElementById('dataBadge').textContent='⚠️';toast(t('le'),true)}})}
 ul();loadGS();
 </script></body></html>
